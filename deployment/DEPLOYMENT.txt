@@ -1,0 +1,92 @@
+DMS production deployment - separate website server and Windows USB scanner
+
+The release ZIP contains application source, deployment templates and tests.
+It intentionally excludes accounts, passwords, environment files, session/bridge
+keys, scanned documents, SQLite, logs, node_modules and machine-specific builds.
+Install/build on the destination server. This is a Node server application with
+persistent SQLite/files, not a static website or an ephemeral serverless function.
+
+Prepared target: one Linux server with systemd, Node 24 LTS and Caddy, plus the
+existing Windows scanner computer. Other operating systems require adapted
+service/reverse-proxy configuration. Actual domain/server details are required
+before this can be published. Do not run multiple app replicas against this store.
+
+1. Prepare and transfer data privately
+Schedule a cutover while nobody is scanning. Stop writes/website and wait for OCR
+to finish before a consistent backup/transfer. Keep the original data until a
+restore test passes. Never copy a live SQLite main file alone: use SQLite backup,
+or stop all writers and copy the database with its WAL/SHM files if present.
+Transfer .data/accounts.json (hashed accounts), dms.sqlite and .data/documents to
+/srv/dms/.data using an encrypted transfer. Confirm every stored document and its
+owner is present. The scanner computer keeps its bridge key and private captures.
+Do not transfer credentials.local.txt or the development .env.local to the server.
+Do not rerun users:provision on the migrated database; preserve user IDs/ownership.
+Use a new AUTH_SECRET on the server to expire old browser sessions at cutover.
+
+2. Install/build (non-root dms account)
+Create a dedicated dms service account, /srv/dms, and restrict .data and environment
+files to that account. Extract the source release into /srv/dms. Install Node 24
+and npm, then run from that directory:
+  npm ci
+  npm test
+  npm run lint
+  npm run build:production
+  DMS_BUILD_DIR=.next-production npm run test:client-secrets
+npm ci also prepares the local English/Arabic/French OCR models.
+Copy deployment/production.env.example to .env.production.local. Set the actual
+HTTPS domain, a new AUTH_SECRET, and the scanner computer's existing bridge API
+key. Keep the two secrets different. Protect this file (owner-only, mode 600).
+The bridge URL for the private tunnel is http://127.0.0.1:18765.
+The production start command refuses missing configuration, plaintext credential
+files, development environment files, missing data/models or a missing build.
+
+3. Connect the Windows scanner over a private SSH tunnel
+Keep the existing bridge running on the scanner computer:
+  npm.cmd run scanner:bridge
+It remains bound to 127.0.0.1:8765; do not expose/open this port to the Internet.
+On the server, configure a dedicated SSH tunnel account/key with remote forwarding
+limited to 127.0.0.1:18765. For that account use AllowTcpForwarding remote,
+GatewayPorts no, PermitListen 127.0.0.1:18765, no agent/X11 forwarding or TTY,
+and key-only authentication. Retain separate SSH administrator access. Validate
+sshd configuration before reloading it. No public scanner endpoint is needed.
+On Windows, create an SSH config alias such as dms-scanner-server with HostName,
+User, IdentityFile and IdentitiesOnly yes. Verify the server host-key fingerprint
+out of band and establish known_hosts before enabling unattended connections.
+Run from the scanner project directory:
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/connect-scanner-tunnel.ps1 -SshHost dms-scanner-server
+It reconnects after a dropped tunnel and uses keepalives. Run bridge and tunnel as
+supervised Windows startup tasks under the existing scanner account. Scanner
+availability still depends on that PC, network, USB, hardware and driver.
+Test authenticated /v1/health from the server using the bridge key without putting
+the key in shell history or logs. Do not share the key with browser clients.
+
+4. Serve HTTPS and supervise startup
+Point domain DNS to the server. Install Caddy; replace the domain in
+deployment/Caddyfile.example, install it as /etc/caddy/Caddyfile and validate with
+  caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+Allow public HTTPS/HTTP for certificates; restrict administrative SSH. App port
+3000 and tunnel port 18765 remain loopback-only. Do not put DMS pages/API behind a
+shared CDN response cache. Preserve incoming Host and trusted forwarding headers.
+Install deployment/dms.service.example as /etc/systemd/system/dms.service, after
+confirming /srv/dms and node's executable path. Then an administrator can run:
+  systemctl daemon-reload
+  systemctl enable --now dms
+  systemctl reload caddy
+Start manually for diagnosis with npm run start:production from /srv/dms.
+All writes/redirects use DMS_PUBLIC_ORIGIN, so HTTPS requests work behind the proxy.
+Cookies remain Secure/HttpOnly/SameSite=Lax. Do not expose next dev or disable TLS.
+
+5. Acceptance and backups
+Test real HTTPS sign-in/out, private/public editor/admin access, user roles,
+Statistics, protected PDF downloads, OCR/search, uploads and audit logs. Perform
+one explicitly authorized non-sensitive scan and confirm dashboard, page counts,
+category, preview and OCR. Inspect production logs and verify the scanner bridge
+is unreachable publicly. Automated checks here do not certify the remote server.
+Back up accounts, database and documents consistently and perform a restore test.
+Supervise/tune logs, disk capacity, Windows startup tasks and tunnel connectivity.
+Production changes should use a maintenance window and preserve .data on upgrade.
+
+References checked for these templates:
+https://caddyserver.com/docs/caddyfile/directives/reverse_proxy
+https://man.openbsd.org/ssh.1 (remote forwarding -R and keepalive options)
+Installed Next.js guide: node_modules/next/dist/docs/01-app/02-guides/self-hosting.md

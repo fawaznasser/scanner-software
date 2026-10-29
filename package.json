@@ -1,0 +1,50 @@
+{
+  "name": "docscan-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "postinstall": "node scripts/prepare-next-compiler.mjs && node scripts/prepare-ocr.mjs",
+    "ocr:prepare": "node scripts/prepare-ocr.mjs",
+    "ocr:worker": "node scripts/ocr-worker.mjs",
+    "test:ocr": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/create-ocr-test-image.ps1 && node scripts/check-ocr-engine.mjs && node scripts/check-ocr-http.mjs",
+    "dev:local": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/start-local.ps1",
+    "scanner:bridge": "node scripts/scanner-bridge.mjs",
+    "users:provision": "node scripts/provision-users.mjs",
+    "test:document-access": "node scripts/check-document-access.mjs",
+    "test:storage": "node scripts/check-storage-integrity.mjs",
+    "test:client-secrets": "node scripts/check-client-secrets.mjs",
+    "test": "node scripts/check-document-library.mjs && node scripts/check-scanner-discovery.mjs && node scripts/check-request-body.mjs && node scripts/check-production-source.mjs && node scripts/check-scan-statistics.mjs && node scripts/check-production-setup.mjs",
+    "test:integration": "node scripts/check-document-access.mjs && node scripts/check-document-library-http.mjs && node scripts/check-security-http.mjs && node scripts/check-statistics-http.mjs",
+    "test:statistics": "node scripts/check-scan-statistics.mjs && node scripts/check-statistics-http.mjs",
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
+    "build:production": "node scripts/build-production.mjs",
+    "start:production": "node scripts/start-production.mjs",
+    "release:package": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/package-production.ps1",
+    "test:production": "node scripts/check-production-http.mjs",
+    "start": "next start",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hyzyla/pdfium": "3.0.0",
+    "@next/swc-wasm-nodejs": "16.4.3",
+    "@tesseract.js-data/ara": "1.0.0",
+    "@tesseract.js-data/eng": "1.0.0",
+    "@tesseract.js-data/fra": "1.0.0",
+    "lucide-react": "^0.468.0",
+    "next": "16.4.3",
+    "pngjs": "7.0.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "tesseract.js": "7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.3",
+    "@types/react-dom": "^19.0.2",
+    "typescript": "^5.7.2"
+  }
+}

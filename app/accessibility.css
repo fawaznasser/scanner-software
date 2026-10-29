@@ -1,0 +1,816 @@
+/* Senior-friendly readability and interaction sizing */
+:root {
+  --muted: #4f6074;
+  --border: #cbd8e5;
+}
+
+html,
+body {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+button,
+input,
+select,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #1683e9;
+  outline-offset: 2px;
+}
+
+@media (min-width: 961px) {
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+    padding: 20px 14px;
+  }
+
+  main {
+    width: calc(100% - 260px);
+    margin-left: 260px;
+  }
+}
+
+@media (min-width: 1251px) {
+  .main-grid {
+    grid-template-columns: 390px minmax(0, 1fr);
+    gap: 12px;
+  }
+}
+
+.brand {
+  gap: 14px;
+}
+
+.brand strong {
+  font-size: 24px;
+}
+
+.brand span {
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.nav-item {
+  min-height: 49px;
+  padding: 12px 14px;
+  gap: 14px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.nav-item svg {
+  width: 21px;
+  height: 21px;
+}
+
+.storage-meter > span {
+  font-size: 14px;
+}
+
+.storage-meter small {
+  font-size: 12px;
+}
+
+.meter {
+  height: 12px;
+}
+
+.topbar {
+  height: 70px;
+  padding: 0 22px;
+}
+
+.global-search {
+  width: 480px;
+  height: 44px;
+  border: 1px solid #e0e7ef;
+}
+
+.global-search input {
+  font-size: 14px;
+}
+
+.profile-copy strong {
+  font-size: 15px;
+}
+
+.profile-copy span {
+  font-size: 12px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.icon-button,
+.menu-button {
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.workspace,
+.section-workspace {
+  padding: 20px;
+}
+
+.panel,
+.stat-card {
+  border-color: #d5e0ea;
+  box-shadow: 0 3px 10px #17324c0d;
+}
+
+.stat-card {
+  height: 112px;
+  padding: 18px 16px;
+}
+
+.stat-icon {
+  width: 58px;
+  min-width: 58px;
+  height: 58px;
+}
+
+.stat-card span {
+  color: #3f5065;
+  font-size: 14px;
+}
+
+.stat-card strong {
+  margin: 4px 0 6px;
+  font-size: 23px;
+}
+
+.stat-card small {
+  font-size: 12px;
+}
+
+.section-heading h2,
+.documents-toolbar h2 {
+  font-size: 21px;
+}
+
+.connected {
+  padding: 5px 9px;
+  font-size: 12px;
+}
+
+.scan-card {
+  min-height: 930px;
+  padding: 20px 22px;
+}
+
+.device-row,
+.field-grid {
+  gap: 14px;
+}
+
+.select-box,
+.square-button,
+.form-field select {
+  min-height: 43px;
+}
+
+.select-box,
+.form-field > span,
+.form-field select,
+.toggle-row {
+  font-size: 14px;
+}
+
+.toggle-row {
+  min-height: 36px;
+  margin-bottom: 10px;
+}
+
+.toggle {
+  width: 42px;
+  height: 23px;
+  padding: 2px;
+}
+
+.toggle i {
+  width: 19px;
+  height: 19px;
+}
+
+.toggle.on i {
+  transform: translateX(19px);
+}
+
+.scan-button,
+.scan-actions button,
+.upload-button,
+.file-actions button,
+.file-actions a {
+  min-height: 43px;
+  font-size: 14px;
+}
+
+.documents-panel {
+  height: 470px;
+}
+
+.documents-toolbar {
+  min-height: 68px;
+  padding: 13px 15px;
+}
+
+.filters label,
+.filters button.date-filter {
+  height: 42px;
+}
+
+.filters label select,
+.filters button.date-filter {
+  font-size: 13px;
+}
+
+.filters label {
+  min-width: 155px;
+}
+
+.filters button.date-filter {
+  width: 270px;
+}
+
+.date-filter-popover {
+  top: 49px;
+  width: 370px;
+  padding: 18px;
+}
+
+.date-popover-heading strong {
+  font-size: 16px;
+}
+
+.date-popover-heading span,
+.custom-range-label,
+.date-presets button,
+.filters .date-filter-popover label,
+.date-filter-actions button {
+  font-size: 12px;
+}
+
+.date-presets button,
+.date-filter-popover input,
+.date-filter-actions button {
+  min-height: 40px;
+}
+
+table {
+  font-size: 13px;
+}
+
+th {
+  height: 38px;
+  color: #405168;
+  font-size: 12px;
+}
+
+tbody tr {
+  height: 44px;
+}
+
+.document-number,
+.filename,
+.muted {
+  font-size: 13px;
+}
+
+.status {
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.checkbox {
+  width: 19px;
+  height: 19px;
+}
+
+.table-footer {
+  height: 52px;
+  font-size: 13px;
+}
+
+.pagination button {
+  min-width: 34px;
+  height: 34px;
+  font-size: 13px;
+}
+
+@media (min-width: 961px) {
+  .preview-panel {
+    height: auto;
+  }
+
+  .preview-workspace,
+  .tab-content {
+    height: clamp(760px, 88vh, 1200px);
+  }
+
+  .viewer-body {
+    height: calc(100% - 42px);
+  }
+}
+
+@media (max-width: 960px) {
+  .preview-panel {
+    height: auto;
+  }
+
+  .preview-panel .preview-workspace,
+  .preview-panel .tab-content {
+    height: clamp(520px, 80vh, 850px);
+  }
+
+  .preview-panel .viewer-body {
+    height: calc(100% - 42px);
+  }
+}
+
+.preview-titlebar {
+  min-height: 56px;
+}
+
+.selected-file strong {
+  font-size: 16px;
+}
+
+.tabs,
+.tabs button {
+  height: 44px;
+}
+
+.tabs button {
+  font-size: 13px;
+}
+
+.viewer-tools {
+  height: 42px;
+}
+
+.viewer-tools button {
+  min-width: 30px;
+  min-height: 30px;
+}
+
+.viewer-tools strong,
+.viewer-tools span,
+.thumbnails b {
+  font-size: 12px;
+}
+
+.ocr-heading strong {
+  font-size: 15px;
+}
+
+.ocr-heading span {
+  padding: 5px 9px;
+  font-size: 11px;
+}
+
+.ocr-panel pre {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.tab-content,
+.detail-card,
+.metadata-grid,
+.history-list {
+  font-size: 14px;
+}
+
+/* Secondary pages */
+.page-heading h1 {
+  font-size: 27px;
+}
+
+.page-heading p,
+.page-heading > div > span {
+  font-size: 12px;
+}
+
+.page-primary,
+.start-scan,
+.ghost-small,
+.filter-button,
+.audit-refresh {
+  min-height: 42px;
+  font-size: 13px;
+}
+
+.card-title h2,
+.results-heading h2,
+.settings-title h2,
+.audit-toolbar h2 {
+  font-size: 18px;
+}
+
+.card-title p,
+.settings-title p,
+.audit-toolbar p,
+.results-heading span {
+  color: #52657a;
+  font-size: 12px;
+}
+
+.summary-card {
+  min-height: 96px;
+  padding: 16px;
+}
+
+.summary-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.summary-card > div > span {
+  font-size: 13px;
+}
+
+.summary-card > div > strong {
+  font-size: 22px;
+}
+
+.library-search,
+.small-search,
+.select-control,
+.filter-button,
+.users-table select {
+  min-height: 42px;
+}
+
+.library-search input,
+.small-search input,
+.select-control select,
+.users-table select {
+  font-size: 13px;
+}
+
+.library-table tbody tr,
+.users-table tbody tr {
+  height: 72px;
+}
+
+.doc-name strong,
+.member strong {
+  font-size: 14px;
+}
+
+.doc-name span,
+.member span,
+.users-table td,
+.member-status,
+.users-foot,
+.library-footer {
+  font-size: 12px;
+}
+
+.member-avatar {
+  width: 43px;
+  height: 43px;
+  font-size: 12px;
+}
+
+.category-card h3 {
+  font-size: 16px;
+}
+
+.category-card strong,
+.category-card span,
+.category-open {
+  font-size: 12px;
+}
+
+.search-hero h2 {
+  font-size: 30px;
+}
+
+.search-hero p,
+.result-copy p,
+.result-copy > span {
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.mega-search {
+  min-height: 58px;
+}
+
+.mega-search input {
+  font-size: 15px;
+}
+
+.result-copy strong {
+  font-size: 15px;
+}
+
+.settings-nav button {
+  height: 50px;
+  font-size: 13px;
+}
+
+.settings-section h3 {
+  font-size: 15px;
+}
+
+.settings-two > :only-child {
+  grid-column: 1 / -1;
+}
+
+.wide-field span,
+.setting-switch strong,
+.storage-action strong,
+.ocr-language-box strong,
+.security-score strong {
+  font-size: 13px;
+}
+
+.wide-field input,
+.settings-content .form-field select {
+  min-height: 43px;
+  font-size: 13px;
+}
+
+.setting-switch {
+  min-height: 66px;
+}
+
+.setting-switch span,
+.storage-action span,
+.ocr-language-box span,
+.security-score span,
+.storage-overview p {
+  color: #52657a;
+  font-size: 11px;
+}
+
+.settings-save button,
+.storage-action button,
+.ocr-language-box button {
+  min-height: 40px;
+  font-size: 12px;
+}
+
+.storage-action {
+  min-height: 65px;
+}
+
+.audit-toolbar {
+  min-height: 84px;
+}
+
+.audit-table-head,
+.audit-row {
+  min-width: 1080px;
+}
+
+.audit-table-head {
+  height: 42px;
+  font-size: 11px;
+}
+
+.audit-row {
+  min-height: 78px;
+}
+
+.audit-user > span {
+  width: 42px;
+  height: 42px;
+  font-size: 12px;
+}
+
+.audit-user strong,
+.audit-device strong,
+.audit-row > p,
+.audit-row > time {
+  font-size: 12px;
+}
+
+.audit-user small,
+.audit-device small,
+.audit-footer {
+  font-size: 11px;
+}
+
+.audit-action {
+  padding: 7px 10px;
+  font-size: 11px;
+}
+
+.profile-popover,
+.header-popover {
+  font-size: 13px;
+}
+
+.profile-popover button,
+.profile-popover a {
+  min-height: 42px;
+  font-size: 13px;
+}
+
+/* Keep supporting text readable throughout secondary pages. */
+.sidebar-help strong {
+  font-size: 14px;
+}
+
+.sidebar-help span,
+.sidebar-help button {
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.notifications-popover p {
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.dashboard-notifications > strong,
+.dashboard-notifications p,
+.dashboard-notifications button,
+.scanner-settings-banner,
+.row-menu button,
+.row-menu a,
+.move-modal p,
+.move-modal label,
+.modal-actions button,
+.sign-in-error {
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.dashboard-notifications button,
+.row-menu button,
+.row-menu a,
+.modal-actions button {
+  min-height: 40px;
+}
+
+.device-select span,
+.device-select small,
+.destination-row span,
+.empty-scanner-preview > span,
+.scan-job span,
+.filter-group label,
+.results-heading span,
+.storage-legend span {
+  color: #52657a;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.device-select strong,
+.destination-row strong,
+.empty-scanner-preview > strong,
+.scan-job strong,
+.filter-group > strong,
+.storage-overview h3 {
+  font-size: 14px;
+}
+
+.destination-row button,
+.scan-job > b,
+.clear-filters,
+.results-heading select,
+.search-result > button,
+.result-actions a,
+.storage-legend span {
+  font-size: 12px;
+}
+
+.device-select > button,
+.destination-row button,
+.clear-filters,
+.search-result > button,
+.result-actions a {
+  min-height: 40px;
+}
+
+.search-chips span,
+.search-chips button {
+  font-size: 12px;
+}
+
+.search-chips button {
+  min-height: 36px;
+  padding: 7px 12px;
+}
+
+.result-copy b {
+  font-size: 11px;
+}
+
+.scan-job {
+  min-height: 68px;
+}
+
+.scan-job > b {
+  padding: 6px 9px;
+}
+
+.viewer-page-label,
+.thumbnails > div > b {
+  font-size: 11px;
+}
+
+.sign-in-brand small,
+.sign-in-message .eyebrow,
+.sign-in-features span,
+.sign-in-kicker,
+.demo-divider,
+.sign-in-copyright {
+  font-size: 12px;
+}
+
+.sign-in-card > p,
+.sign-in-message > p {
+  color: #52657a;
+  line-height: 1.65;
+}
+
+.sign-in-message > p {
+  color: #d5e3ee;
+}
+
+/* Sign in */
+.sign-in-card > p,
+.sign-in-field input,
+.sign-in-submit {
+  font-size: 14px;
+}
+
+.sign-in-field > span,
+.demo-accounts strong {
+  font-size: 13px;
+}
+
+.sign-in-field > div,
+.sign-in-submit {
+  min-height: 48px;
+}
+
+.demo-accounts > button {
+  min-height: 66px;
+}
+
+.demo-accounts small,
+.demo-password {
+  font-size: 11px;
+}
+
+.demo-avatar {
+  width: 36px;
+  height: 36px;
+  font-size: 11px;
+}
+
+@media (max-width: 960px) {
+  .topbar {
+    height: 66px;
+  }
+
+  .workspace,
+  .section-workspace {
+    padding: 16px 12px;
+  }
+
+  .documents-toolbar {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 680px) {
+  .stat-card {
+    height: 96px;
+  }
+
+  .stat-card span {
+    font-size: 12px;
+  }
+
+  .stat-card strong {
+    font-size: 20px;
+  }
+
+  .filters button.date-filter {
+    min-width: 235px;
+  }
+
+  .page-heading h1 {
+    font-size: 24px;
+  }
+}
+

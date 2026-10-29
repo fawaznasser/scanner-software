@@ -1,0 +1,83 @@
+DMS production preparation — 26 October 2026
+
+Update - 27 October 2026: scanner connection and driver recovery are now one
+Check scanner connection button. Working/busy devices are not restarted; driver
+recovery requires explicit administrator confirmation and rechecks the busy state.
+Production commands: npm run build:production, npm run start:production,
+npm run test:production, npm run release:package. The new deployment templates
+and separate-server/private-scanner-tunnel instructions are in
+deployment/DEPLOYMENT.txt. These supersede the earlier local release commands
+below. Domain, remote access, DNS/HTTPS and a tested private tunnel are still
+required before publishing. No remote server has been configured or published.
+
+Update — 27 October 2026: local OCR is now implemented. New scans/uploads are
+queued automatically; existing scans were indexed. English/Arabic/French models,
+orientation handling, per-page text, retries, expired-lease recovery and protected
+text search are tested. See OCR_SETUP.txt. Original PDFs remain image-only.
+
+Completed:
+- Removed simulated scanner paths, sample invoice previews/history/notifications,
+  placeholder category/profile/help actions, fake quota and unsupported settings.
+- Retired the 8 public sample PDFs to .data/retired-public-samples/demo-documents.
+  These files are recoverable. Existing business documents were not deleted.
+- Document history uses permission-protected real audit events. Storage totals
+  use stored file sizes. Text recognition is explicitly marked not configured.
+- Enabled write-origin checks, bounded JSON/multipart parsing, security response
+  headers and server-side logout revocation. Private/public/admin access is tested.
+- Updated Next.js to 16.4.3 and compatible patched dependencies. npm audit reports
+  zero vulnerabilities in production dependencies at the time of this check.
+- Windows Application Control blocks the native compiler on this computer.
+  Webpack plus the matching, version-locked SWC WASM fallback builds successfully.
+  postinstall prepares this fallback without downloading code at server startup.
+  Windows security policies were not disabled.
+- Isolated production build and local production-mode integration tests passed.
+- Repaired earlier assisted test document 14 from its original stored capture.
+  Original bytes/metadata are backed up under .data/document-repairs, and the
+  repair is logged as System / DMS maintenance, not as another user's action.
+- Active stored-file signature checks pass. This is not a full PDF renderer or
+  malware scan. Automated fixtures/test sign-ins were cleaned after integration.
+
+Test commands (run from the project directory):
+  npm.cmd test
+  npm.cmd run lint
+  npm.cmd run test:integration
+  npm.cmd run test:storage
+  npm.cmd run test:client-secrets
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -STA -File scripts/check-scanner-image.ps1
+  npm.cmd run build
+
+Integration checks require a running local website and credentials.local.txt.
+They create uniquely marked temporary test records and remove only their own
+records/files. Run them before going live, not as uncoordinated checks against
+a busy production database. DMS_TEST_BASE_URL selects a different local test URL.
+
+The validated production build was generated in .next-production-check and
+tested on loopback port 3001. This was a test, not deployment. The normal website
+remains a development server on port 3000. Do not expose next dev to production.
+The bridge health check passes, but the scanner was not detected during the final
+read-only device check. Hardware acceptance remains required before go-live.
+For a normal release, stop the development website, run npm.cmd run build, then
+npm.cmd start. Run the scanner bridge separately on the Windows scanner host.
+
+Required before go-live:
+1. Rotate issued passwords/secrets as appropriate. Store credentials securely,
+   then remove the plaintext credentials.local.txt file from the deployment.
+   .gitignore protects new commits, not copies already shared elsewhere.
+2. Configure HTTPS, a trusted reverse proxy/host and restricted network access.
+   Verify cookie/origin behavior through that real production HTTPS address.
+3. Configure restricted Windows file permissions/service identities and supervised
+   startup for the website/bridge. Do not grant broad Windows administrator access
+   to the web server. Scanner-service control is separate from DMS roles.
+4. Back up SQLite, accounts/session secrets, documents and private scanner captures;
+   perform a restore test. Agree a retention policy for captures/diagnostics/trash.
+5. Perform browser acceptance checks and one authorized non-sensitive physical
+   scan: private/public destination, category, dashboard update, preview, download,
+   duplex, cancellation and audit entry. No physical scan was triggered in this
+   preparation run. Automated checks are not a penetration test or an uptime SLA.
+
+Not implemented (no fake enabled controls remain): searchable PDF export/text layer,
+two-factor authentication, email notifications, automatic archive/backup policies,
+cross-device browser preferences, disk quota enforcement or permanent trash purge.
+Uploaded PDF page totals are corrected when the local OCR/PDF processor finishes.
+The local bridge's in-flight job state is temporary; a bridge/server restart can
+interrupt a pending scan. Imported document files and SQLite records persist.

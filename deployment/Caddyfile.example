@@ -1,0 +1,13 @@
+# Replace the domain, then install as /etc/caddy/Caddyfile.
+dms.your-domain.example {
+    request_body {
+        max_size 26MB
+    }
+    reverse_proxy 127.0.0.1:3000 {
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Real-IP {remote_host}
+        transport http {
+            response_header_timeout 120s
+        }
+    }
+}

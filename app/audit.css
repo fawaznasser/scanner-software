@@ -1,0 +1,5 @@
+.audit-summary { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.audit-action.file-uploaded, .audit-action.file-scanned { color: #08774e; background: #e3f5eb; }
+.audit-action.file-updated { color: #075baa; background: #e8f2ff; }
+.audit-action.file-deleted { color: #b32f2a; background: #ffe9e7; }
+.audit-row > p { overflow-wrap: anywhere; line-height: 1.65; }

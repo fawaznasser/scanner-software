@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+import ts from 'typescript';
+const compiled = ts.transpileModule(fs.readFileSync('lib/request-body.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
+const exports = {};
+vm.runInNewContext(compiled, { exports, require: () => ({}), Buffer, SyntaxError, RangeError });
+const { readJsonObject } = exports;
+const request = body => new Request('http://localhost/test', { method: 'POST', body });
+assert.equal((await readJsonObject(request('{"name":"valid"}'))).name, 'valid');
+for (const body of ['null', '[]', '"text"', 'true', '', '{']) await assert.rejects(readJsonObject(request(body)), /JSON/);
+await assert.rejects(readJsonObject(request(JSON.stringify({ value: 'x'.repeat(17000) }))), /too large/);
+const stream = new ReadableStream({ start(controller) { controller.enqueue(new Uint8Array(9000)); controller.enqueue(new Uint8Array(9000)); controller.close(); } });
+await assert.rejects(readJsonObject(new Request('http://localhost/test', { method: 'POST', body: stream, duplex: 'half' })), /too large/);
+console.log('Request-body checks passed: valid objects, malformed/null/array inputs, headerless and streamed size limits.');

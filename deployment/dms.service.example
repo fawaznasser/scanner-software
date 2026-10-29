@@ -1,0 +1,26 @@
+[Unit]
+Description=DMS production website
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=dms
+Group=dms
+WorkingDirectory=/srv/dms
+Environment=NODE_ENV=production
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/bin/env node scripts/start-production.mjs
+Restart=on-failure
+RestartSec=5
+KillMode=control-group
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/dms/.data /srv/dms/.next-production
+
+[Install]
+WantedBy=multi-user.target

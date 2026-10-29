@@ -1,0 +1,12 @@
+.users-table { table-layout: fixed; min-width: 900px; }
+.users-table th:first-child, .users-table td:first-child { width: 30%; }
+.users-table th:nth-child(2) { width: 22%; }
+.users-table th:nth-child(3) { width: 13%; }
+.users-table th:nth-child(4) { width: 16%; }
+.users-table th:nth-child(5) { width: 19%; }
+.users-table td:nth-child(2) > .dms-dropdown { width: 190px; min-width: 0; max-width: 100%; }
+.users-table .member > div { min-width: 0; overflow-wrap: anywhere; }
+.users-table .member-avatar { flex-shrink: 0; }
+.user-document-count { display: grid; gap: 4px; }
+.user-document-count strong { color: #233b53; font-size: 15px; }
+.user-document-count small { color: #52657a; font-size: 12px; }

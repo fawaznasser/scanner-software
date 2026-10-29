@@ -1,0 +1,39 @@
+Local OCR and text search — 27 October 2026
+
+New scans/uploads are saved first, then queued for local text recognition.
+Existing genuine scans have been backfilled. Original files are not rewritten.
+
+Engines: Tesseract.js 7 + PDFium WebAssembly; English, Arabic and French.
+No cloud OCR API is used. Models are installed with npm and prepared by postinstall.
+If models are missing: npm.cmd run ocr:prepare
+
+All Documents:
+- Search in Everything or Recognized text after the document says Text searchable.
+- Read text / Retry text recognition is available to the owner and administrators.
+- Administrators can queue unprocessed existing documents in batches of up to 100.
+- The dashboard's Extracted Text tab shows the stored text page by page.
+- Public/private read permissions also protect extracted text and its per-page API.
+- Low-confidence text is marked for review. Printed text is the primary use case;
+  handwriting, faint scans and complex layouts may be recognized incorrectly.
+
+Persistence/operations:
+- Queue, leases, per-page text and state are in .data/dms.sqlite.
+- A separate Node worker processes one document at a time; expired leases recover.
+- The website starts that worker as needed. Optional manual command:
+    npm.cmd run ocr:worker
+- Deploy scripts/ and installed packages with the app; copying only .next is not
+  enough. Persist/back up .data, and permit the service account to run the fixed
+  Node worker. No Windows administrator privilege is required for OCR.
+- Worker logs: .data/run-logs/ocr.out.log and ocr.err.log.
+- Limits: 100 MB/file, 100 PDF pages, bounded PDF rendering and extracted-text size.
+  Long/interrupted jobs can be retried; errors are not reported as completed jobs.
+
+Tests:
+  npm.cmd test
+  npm.cmd run lint
+  npm.cmd run test:ocr
+  node scripts/check-real-document-search.mjs
+  npm.cmd run test:integration
+
+OCR indexes DMS search. It does NOT yet add a text layer to downloaded PDF files.
+The normal image-only PDF still previews/downloads unchanged.
